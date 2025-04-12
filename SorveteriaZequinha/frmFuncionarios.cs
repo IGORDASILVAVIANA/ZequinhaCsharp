@@ -7,11 +7,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using MosaicoSolutions.ViaCep;
 
 namespace SorveteriaZequinha
 {
     public partial class frmFuncionarios : Form
     {
+        //Criando variáveis para controle do menu
+        const int MF_BYCOMMAND = 0X400;
+        [DllImport("user32")]
+        static extern int RemoveMenu(IntPtr hMenu, int nPosition, int wFlags);
+        [DllImport("user32")]
+        static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        [DllImport("user32")]
+        static extern int GetMenuItemCount(IntPtr hWnd);
+
+
         public frmFuncionarios()
         {
             InitializeComponent();
@@ -23,7 +35,9 @@ namespace SorveteriaZequinha
 
         private void frmFuncionarios_Load(object sender, EventArgs e)
         {
-
+            IntPtr hMenu = GetSystemMenu(this.Handle, false);
+            int MenuCount = GetMenuItemCount(hMenu) - 1;
+            RemoveMenu(hMenu, MenuCount, MF_BYCOMMAND);
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -51,6 +65,7 @@ namespace SorveteriaZequinha
             txtEmail.Enabled = false;
             txtNumero.Enabled = false; 
             txtLogradouro.Enabled = false;
+            txtBairro.Enabled = false;  
 
             mskCEP.Enabled = false; 
             mskCPF.Enabled = false; 
@@ -83,6 +98,7 @@ namespace SorveteriaZequinha
             txtNumero.Enabled = true;
             txtLogradouro.Enabled = true;
             txtNome.Enabled = true;
+            txtBairro.Enabled = true;
          
 
             mskCEP.Enabled = true;
@@ -104,6 +120,26 @@ namespace SorveteriaZequinha
             txtNome.Focus();
         }
 
+        //Criando o metódo buscaCep
+        public void buscaCep(String cep)
+        {
+            //VAR -> Variável do tipo implicita, ou seja, não sabe qual o tipo que será armazenado
+
+            var viaCepService = ViaCepService.Default();
+            var endereco = viaCepService.ObterEndereco(cep);
+
+            txtLogradouro.Text = endereco.Logradouro;
+            txtCidade.Text = endereco.Localidade;
+            txtComplemento.Text = endereco.Complemento;
+            txtBairro.Text = endereco.Bairro;
+            cbbEstado.Text = endereco.UF;
+            cbbEstado.Text = endereco.UF;
+            
+
+        }
+
+
+
         private void btnNovo_Click(object sender, EventArgs e)
         {
             habilitarCampos();
@@ -115,7 +151,7 @@ namespace SorveteriaZequinha
                 || (cbbFuncao.Text.Equals("")) || (mskTelefone.Text.Equals("     -")
                 || mskCEP.Text.Equals("     -") || (txtNumero.Text.Equals("")) || (txtLogradouro.Text.Equals(""))
                 || (cbbEstado.Text.Equals("")) || (cbbUF.Text.Equals("")
-                || (txtComplemento.Text.Equals("")) || (txtCidade.Text.Equals("")) ))))
+                || (txtComplemento.Text.Equals("")) || (txtCidade.Text.Equals("") || txtBairro.Text.Equals("")) ))))
             {
                 MessageBox.Show("Favor inserir valores");
 
@@ -130,6 +166,16 @@ namespace SorveteriaZequinha
         private void dtpDataNascimento_ValueChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void mskCEP_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                //executando o método busca cep
+                buscaCep(mskCEP.Text);
+                txtNumero.Focus();
+            }
         }
     }
 }

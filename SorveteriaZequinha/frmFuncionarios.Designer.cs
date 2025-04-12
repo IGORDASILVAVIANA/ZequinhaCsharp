@@ -53,6 +53,8 @@
             this.btnCadastrar = new System.Windows.Forms.Button();
             this.btnNovo = new System.Windows.Forms.Button();
             this.gpbEndereco = new System.Windows.Forms.GroupBox();
+            this.txtBairro = new System.Windows.Forms.TextBox();
+            this.lbl_bairro = new System.Windows.Forms.Label();
             this.txtComplemento = new System.Windows.Forms.TextBox();
             this.txtNumero = new System.Windows.Forms.TextBox();
             this.lblNumero = new System.Windows.Forms.Label();
@@ -336,6 +338,8 @@
             // 
             // gpbEndereco
             // 
+            this.gpbEndereco.Controls.Add(this.txtBairro);
+            this.gpbEndereco.Controls.Add(this.lbl_bairro);
             this.gpbEndereco.Controls.Add(this.txtComplemento);
             this.gpbEndereco.Controls.Add(this.txtNumero);
             this.gpbEndereco.Controls.Add(this.lblNumero);
@@ -357,6 +361,23 @@
             this.gpbEndereco.TabIndex = 8;
             this.gpbEndereco.TabStop = false;
             this.gpbEndereco.Text = "Endereço";
+            // 
+            // txtBairro
+            // 
+            this.txtBairro.Location = new System.Drawing.Point(506, 129);
+            this.txtBairro.MaxLength = 50;
+            this.txtBairro.Name = "txtBairro";
+            this.txtBairro.Size = new System.Drawing.Size(246, 26);
+            this.txtBairro.TabIndex = 22;
+            // 
+            // lbl_bairro
+            // 
+            this.lbl_bairro.AutoSize = true;
+            this.lbl_bairro.Location = new System.Drawing.Point(434, 132);
+            this.lbl_bairro.Name = "lbl_bairro";
+            this.lbl_bairro.Size = new System.Drawing.Size(51, 20);
+            this.lbl_bairro.TabIndex = 21;
+            this.lbl_bairro.Text = "Bairro";
             // 
             // txtComplemento
             // 
@@ -451,6 +472,7 @@
             this.mskCEP.Name = "mskCEP";
             this.mskCEP.Size = new System.Drawing.Size(110, 26);
             this.mskCEP.TabIndex = 9;
+            this.mskCEP.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mskCEP_KeyDown);
             // 
             // lblCEP
             // 
@@ -594,5 +616,7 @@
         private System.Windows.Forms.Button btnPesquisar;
         private System.Windows.Forms.Button btnExcluir;
         private System.Windows.Forms.Button btnAlterar;
+        private System.Windows.Forms.TextBox txtBairro;
+        private System.Windows.Forms.Label lbl_bairro;
     }
 }
